@@ -1,0 +1,62 @@
+<?php $pagetitle="Admin Details"; include("header.php"); ?>
+<?php
+
+if(isset($_SESSION['admin_id']))
+{
+	$center_admin_id = $_REQUEST['center_admin_id'];
+	include('connection_file/connect.php');
+	$query = "select t_center_details.center_name, t_center_details.center_code, t_center_details.center_location, t_center_details.center_address, t_admin.admin_first_name, t_admin.admin_last_name, t_admin.admin_email_id, t_admin.admin_address, t_admin.admin_contact from t_center_details join t_admin on t_center_details.admin_id = t_admin.admin_id where t_admin.admin_id=$center_admin_id";
+	$result = mysql_query($query, $link) or die (mysql_error());
+	$row = mysql_fetch_assoc($result);
+	
+?>
+
+<h1 style="font-weight:lighter;">Center Admin Details</h1><hr>
+<div class="hero-unit">
+	<div id="details" class="hero-unit" style="padding:1px 20px 1px 20px ; background-color:#f7f7f7;">
+        <h3 style="background-color:#e1dfdf; padding:5px 0 0 10px;"><?php echo $row['admin_first_name'].' '.$row['admin_last_name']; ?>
+        	<ul class="nav pull-right">
+                <li><?php echo "<a href=edit_admin.php?center_admin_id=".$center_admin_id.">"; ?>Edit<?php echo "</a>"; ?></li>
+            </ul>
+        </h3><br>
+        <table class="table table-hover">
+        	<tr>
+            	<td style="color:#000000;width:200px;">Email ID:</td>
+                <td><?php echo $row['admin_email_id']; ?></td>
+            </tr> 
+            <tr>
+            	<td style="color:#000000;width:200px;">Admin Address:</td>
+                <td><?php echo $row['admin_address']; ?></td>
+            </tr>
+            <tr>
+            	<td style="color:#000000;width:200px;">Contact:</td>
+                <td><?php echo $row['admin_contact']; ?></td>
+            </tr>
+            <tr>
+            	<td style="color:#000000;width:200px;">Center Name:</td>
+                <td><?php echo $row['center_name']; ?></td>
+            </tr>
+            <tr>
+            	<td style="color:#000000; width:200px;">Center Location:</td>
+                <td><?php echo $row['center_location']; ?></td>
+            </tr>  
+        </table>
+    </div>
+</div>
+<?php
+}
+else
+{
+	
+?>
+	<div class="hero-unit">
+    	<center><h1>Session is destroyed.Please again login.</h1></center>
+    </div>
+    
+<?php
+
+}
+
+?>
+
+<?php include("footer.php"); ?>
